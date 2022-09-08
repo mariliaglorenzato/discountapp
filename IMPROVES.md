@@ -1,0 +1,1 @@
+adcionar slug para struct de product para facilitar indexação

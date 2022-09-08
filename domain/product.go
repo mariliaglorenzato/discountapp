@@ -11,6 +11,7 @@ type Product struct {
 	Title       string
 	Description string
 	Price       uint64 `validate:"gte=5"`
+	TotalPrice  uint64
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *gorm.DeletedAt `gorm:"index"`

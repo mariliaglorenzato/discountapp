@@ -5,8 +5,10 @@ import (
 	"os"
 )
 
+const eventsDiscountsFileName = "events_discounts.json"
+
 type EventsConfig struct {
-	events []string `json:events`
+	Events []string `json:events`
 }
 
 func LoadConfiguration() (EventsConfig, error) {
@@ -19,7 +21,7 @@ func LoadConfiguration() (EventsConfig, error) {
 	defer configFile.Close()
 
 	jsonParser := json.NewDecoder(configFile)
-	jsonParser.Decode(&eventsConfig.events)
+	jsonParser.Decode(&eventsConfig.Events)
 
 	return eventsConfig, nil
 }

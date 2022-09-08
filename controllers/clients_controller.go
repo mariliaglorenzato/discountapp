@@ -53,11 +53,13 @@ func (c *ClientsController) Create(ctx *gin.Context) {
 		FirstName: payload.FirstName,
 		LastName:  payload.LastName,
 		BirthDate: parsedBirthDate,
+		Email:     payload.Email,
 	}
 
 	ucOutput, err := c.createClient.Perform(clientInput)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"data": ucOutput})

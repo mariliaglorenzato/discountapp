@@ -4,11 +4,12 @@ import (
 	"time"
 )
 
-const eventsDiscountsFileName = "events_discounts"
+const (
+	dateFormatWithoutYear = "02/01"
+)
 
 type Discount struct {
 	TotalDiscount float64
-	Product       *Product
 }
 
 func NewDiscount(client *Client) *Discount {
@@ -17,7 +18,7 @@ func NewDiscount(client *Client) *Discount {
 		panic(err.Error())
 	}
 
-	eventDiscount := getEventDiscount(eventsConfig.events)
+	eventDiscount := getEventDiscount(eventsConfig.Events)
 	ageDiscount := getAgeDiscount(client.getClientAge())
 	totalDiscount := GetTotalDiscount(eventDiscount, ageDiscount)
 
@@ -26,26 +27,22 @@ func NewDiscount(client *Client) *Discount {
 	}
 }
 
-func (d *Discount) GetPriceWithDiscount() uint64 {
-	if d.Product != nil {
-		floatPrice := float64(d.Product.Price / 100)
-		priceInFloat := floatPrice - (floatPrice * d.TotalDiscount)
-		return uint64(priceInFloat * 100)
-	}
-
-	return 0
-}
-
 func GetTotalDiscount(eventDiscount float64, ageDiscount float64) float64 {
 	return eventDiscount + ageDiscount
 }
 
+func (d *Discount) GetPriceWithDiscount(price uint64) uint64 {
+	floatPrice := float64(price / 100)
+	priceInFloat := floatPrice - (floatPrice * d.TotalDiscount)
+	return uint64(priceInFloat * 100)
+}
+
 func getEventDiscount(events []string) float64 {
 	for _, event := range events {
-		parsedDate, err := time.Parse("02/01", event)
+		parsedDate, err := time.Parse(dateFormatWithoutYear, event)
 		if err != nil {
 			now := time.Now()
-			if now.Format("02/01") == parsedDate.Format("02/01") {
+			if now.Format(dateFormatWithoutYear) == parsedDate.Format(dateFormatWithoutYear) {
 				return float64(0.1)
 			}
 

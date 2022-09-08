@@ -7,9 +7,10 @@ import (
 )
 
 type Client struct {
-	ID        int64     `gorm:"primary_key,autoIncrement"`
+	ID        int64     `gorm:"primaryKey,autoIncrement"`
 	FirstName string    `validate:"required"`
 	LastName  string    `validate:"required"`
+	Email     string    `gorm:"unique"`
 	BirthDate time.Time `validate:"required"`
 	CreatedAt time.Time
 	UpdatedAt time.Time

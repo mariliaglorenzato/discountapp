@@ -4,9 +4,12 @@ import (
 	"discountapp/domain"
 	"discountapp/usecases/interfaces"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
+/*
+* Melhorias: separar em ProductRepository e ClientRepository
+ */
 type Repository struct {
 	db *gorm.DB
 }
@@ -41,6 +44,16 @@ func (r *Repository) CreateProduct(product *domain.Product) (*domain.Product, er
 	}
 
 	return product, nil
+}
+
+func (r *Repository) GetClient(client *domain.Client) (*domain.Client, error) {
+	result := r.db.Find(&client)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return client, nil
 }
 
 func (r *Repository) GetAllClients() ([]*domain.Client, error) {

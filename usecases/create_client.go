@@ -19,6 +19,7 @@ func (usecase *CreateClient) Perform(clientInput *inputs.ClientInput) (*domain.C
 		FirstName: clientInput.FirstName,
 		LastName:  clientInput.LastName,
 		BirthDate: clientInput.BirthDate,
+		Email:     clientInput.Email,
 	}
 
 	_, err := usecase.Repository.CreateClient(&client)
