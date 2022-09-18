@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
-	"discountapp/controllers/params"
+	"discountapp/controllers/responses"
 	"discountapp/usecases/inputs"
 	"discountapp/usecases/interfaces"
 
@@ -22,17 +24,34 @@ func NewDiscountsController(
 	}
 }
 
+// GetDiscount godoc
+// @Summary      Get discount
+// @Description  get discount
+// @Tags         discounts
+// @Accept       json
+// @Produce      json
+// @Param        product_title   query     string  false  "name search by product title"
+// @Param        client_email    query     string  false  "name search by client email"  Format(email)
+// @Success      200  {array}   responses.DiscountResponse
+// @Failure      400  {object}  responses.ErrorResponse
+// @Failure      404  {object}  responses.ErrorResponse
+// @Failure      500  {object}  responses.ErrorResponse
+// @Router       /discounts [get]
 func (c *DiscountsController) Show(ctx *gin.Context) {
-	var params params.DiscountParams
-
-	if err := ctx.ShouldBind(&params); err != nil {
-		ctx.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	queryParams := ctx.Request.URL.Query()
+	ProductSlugQueryParam := queryParams.Get("product_title")
+	if ProductSlugQueryParam == "" {
+		ctx.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ProductSlug"})
 		return
 	}
-
+	clientEmailQueryParam := queryParams.Get("client_email")
+	if clientEmailQueryParam == "" {
+		ctx.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ClientEmail"})
+		return
+	}
 	input := inputs.DiscountInput{
-		ProductTitle: params.ProductTitle,
-		ClientEmail:  params.ClientEmail,
+		ProductSlug: ProductSlugQueryParam,
+		ClientEmail: clientEmailQueryParam,
 	}
 
 	ucOutput, err := c.getDiscount.Perform(&input)
@@ -40,6 +59,16 @@ func (c *DiscountsController) Show(ctx *gin.Context) {
 		ctx.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Println(ucOutput)
 
-	ctx.IndentedJSON(http.StatusOK, ucOutput)
+	response, _ := json.Marshal(&responses.DiscountResponse{
+		OriginalProductPrice: ucOutput.OriginalProductPrice,
+		ProductTile:          ucOutput.ProductTile,
+		ProductPrice:         ucOutput.ProductPrice,
+		DiscountPercentage:   ucOutput.DiscountPercentage,
+	})
+
+	ctx.IndentedJSON(http.StatusOK, gin.H{
+		"data": response,
+	})
 }

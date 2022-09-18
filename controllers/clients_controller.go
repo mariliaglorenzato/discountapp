@@ -26,6 +26,17 @@ func NewClientsController(
 	}
 }
 
+// ListClients godoc
+// @Summary      List clients
+// @Description  get clients
+// @Tags         clients
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   payloads.ClientPayload
+// @Failure      400  {object}  responses.ErrorResponse
+// @Failure      404  {object}  responses.ErrorResponse
+// @Failure      500  {object}  responses.ErrorResponse
+// @Router       /clients [get]
 func (c *ClientsController) GetAll(ctx *gin.Context) {
 	ucOutput, err := c.getClient.Perform()
 	if err != nil {
@@ -43,6 +54,7 @@ func (c *ClientsController) Create(ctx *gin.Context) {
 		return
 	}
 
+	// colocar no arquivo de data
 	parsedBirthDate, err := time.Parse("02/01/2006", payload.BirthDate)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
