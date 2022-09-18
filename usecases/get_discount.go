@@ -1,8 +1,6 @@
 package usecases
 
 import (
-	"fmt"
-
 	domain "discountapp/domain"
 	"discountapp/usecases/inputs"
 	"discountapp/usecases/interfaces"
@@ -18,7 +16,7 @@ func NewGetDiscount(repository interfaces.IRepository) interfaces.IGetDiscount {
 }
 
 func (usecase *GetDiscount) Perform(discountInput *inputs.DiscountInput) (*outputs.DiscountOutput, error) {
-	product := domain.Product{Title: discountInput.ProductTitle}
+	product := domain.Product{Slug: discountInput.ProductSlug}
 	productOutput, err := usecase.Repository.GetProduct(&product)
 	if err != nil {
 		return nil, err
@@ -31,17 +29,17 @@ func (usecase *GetDiscount) Perform(discountInput *inputs.DiscountInput) (*outpu
 		return nil, err
 	}
 
-	fmt.Println(clientOutput)
-
-	discount := domain.NewDiscount(clientOutput)
-
-	totalPrice := discount.GetPriceWithDiscount(productOutput.Price)
+	totalPrice, totalDiscount := domain.GetPriceWithDiscount(
+		productOutput.Price,
+		clientOutput.GetClientAge(),
+		nil,
+	)
 
 	output := outputs.DiscountOutput{
 		ProductTile:          productOutput.Title,
 		ProductPrice:         int64(totalPrice),
 		OriginalProductPrice: int64(productOutput.Price),
-		DiscountPercentage:   discount.TotalDiscount,
+		DiscountPercentage:   totalDiscount,
 	}
 
 	return &output, nil

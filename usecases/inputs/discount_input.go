@@ -1,6 +1,6 @@
 package inputs
 
 type DiscountInput struct {
-	ProductTitle string
-	ClientEmail  string
+	ProductSlug string
+	ClientEmail string
 }

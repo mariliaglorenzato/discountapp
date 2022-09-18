@@ -17,7 +17,8 @@ type Client struct {
 	DeletedAt *gorm.DeletedAt `gorm:"index"`
 }
 
-func (c *Client) getClientAge() uint {
+func (c *Client) GetClientAge() uint {
 	now := time.Now()
-	return uint(now.Sub(c.BirthDate))
+
+	return uint(now.Year() - c.BirthDate.Year())
 }
