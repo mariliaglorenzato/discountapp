@@ -1,0 +1,16 @@
+{
+    "events": [
+        {
+            "event_name": "black_friday",
+            "event_date": "26/11"
+        },
+        {
+            "event_name": "natal",
+            "event_date": "25/12"
+        },
+        {
+            "event_name": "kids",
+            "event_date": "10/10"
+        }
+    ]
+}
