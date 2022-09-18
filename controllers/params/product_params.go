@@ -1,5 +1,5 @@
 package params
 
 type ProductParams struct {
-	Title string `json:"title" binding:"required"`
+	Slug string `json:"slug" binding:"required"`
 }

@@ -14,8 +14,8 @@ func NewGetProduct(repository interfaces.IRepository) interfaces.IGetProduct {
 	return &GetProduct{Repository: repository}
 }
 
-func (usecase *GetProduct) Perform(ProductByTitleInput *inputs.ProductByTitleInput) (*domain.Product, error) {
-	product := domain.Product{Title: ProductByTitleInput.Title}
+func (usecase *GetProduct) Perform(ProductBySlugInput *inputs.ProductBySlugInput) (*domain.Product, error) {
+	product := domain.Product{Slug: ProductBySlugInput.Slug}
 	output, err := usecase.Repository.GetProduct(&product)
 	if err != nil {
 		return nil, err

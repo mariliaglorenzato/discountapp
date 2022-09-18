@@ -6,5 +6,5 @@ import (
 )
 
 type IGetProduct interface {
-	Perform(productInput *inputs.ProductByTitleInput) (*domain.Product, error)
+	Perform(productInput *inputs.ProductBySlugInput) (*domain.Product, error)
 }

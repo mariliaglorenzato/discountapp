@@ -12,7 +12,7 @@ func BuildProduct() *domain.Product {
 		Title:       "Caneta de CD",
 		Slug:        "caneta-de-cd",
 		Description: "Caneta preta não sai com alcool",
-		Price:       30,
+		Price:       3000,
 		TotalPrice:  0,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Time{},
@@ -24,6 +24,6 @@ func BuildStubbedProduct() *domain.Product {
 		Title:       "Caneta de CD",
 		Slug:        "caneta-de-cd",
 		Description: "Caneta preta não sai com alcool",
-		Price:       30,
+		Price:       3000,
 	}
 }
