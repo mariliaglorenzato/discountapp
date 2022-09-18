@@ -12,7 +12,7 @@ type Product struct {
 	Title       string
 	Slug        string `gorm:"index:index_products_slug,unique"`
 	Description string
-	Price       uint64 `validate:"gte=5"`
+	Price       uint64 `validate:"gte=500"`
 	TotalPrice  uint64
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
