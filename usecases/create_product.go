@@ -19,12 +19,13 @@ func (usecase *CreateProduct) Perform(productInput *inputs.ProductInput) (*domai
 		Title:       productInput.Title,
 		Description: productInput.Description,
 		Price:       productInput.Price,
+		Slug:        domain.TitleToSlug(productInput.Title),
 	}
 
-	_, err := usecase.Repository.CreateProduct(&product)
+	productOutput, err := usecase.Repository.CreateProduct(&product)
 	if err != nil {
 		return nil, err
 	}
 
-	return &product, nil
+	return productOutput, nil
 }
