@@ -1,7 +1,9 @@
 package interfaces
 
-import "discountapp/domain"
+import (
+	"discountapp/usecases/outputs"
+)
 
 type IGetClients interface {
-	Perform() ([]*domain.Client, error)
+	Perform() (*outputs.ClientsOutput, error)
 }

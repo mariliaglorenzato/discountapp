@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"discountapp/controllers/payloads"
+	"discountapp/controllers/responses"
 	"discountapp/usecases/inputs"
 	"discountapp/usecases/interfaces"
 
@@ -34,7 +35,7 @@ func NewProductsController(
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   payloads.ProductPayload
+// @Success      200  {array}   responses.ProductResponse
 // @Failure      400  {object}  responses.ErrorResponse
 // @Failure      404  {object}  responses.ErrorResponse
 // @Failure      500  {object}  responses.ErrorResponse
@@ -46,9 +47,21 @@ func (c *ProductsController) GetAll(ctx *gin.Context) {
 		return
 	}
 
-	ctx.IndentedJSON(http.StatusOK, ucOutput)
+	ctx.IndentedJSON(http.StatusOK, responses.GetProductsResponse(ucOutput))
 }
 
+// AddProduct godoc
+// @Summary      Add a product
+// @Description  add by json product
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        product  body      payloads.ProductPayload  true  "Add product"
+// @Success      200      {object}  responses.ProductResponse
+// @Failure      400      {object}  responses.ErrorResponse
+// @Failure      404      {object}  responses.ErrorResponse
+// @Failure      500      {object}  responses.ErrorResponse
+// @Router       /products [post]
 func (c *ProductsController) Create(ctx *gin.Context) {
 	var payload *payloads.ProductPayload
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -77,11 +90,11 @@ func (c *ProductsController) Create(ctx *gin.Context) {
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Param        slug   path      string  true  "Title Slug"
-// @Success      200  {object}  model.Account
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
+// @Param        slug   path      string  true  "Product Slug"
+// @Success      200  {object}  responses.ProductResponse
+// @Failure      400  {object}  responses.ErrorResponse
+// @Failure      404  {object}  responses.ErrorResponse
+// @Failure      500  {object}  responses.ErrorResponse
 // @Router       /products/{slug} [get]
 func (c *ProductsController) Show(ctx *gin.Context) {
 	titleSlugParam := ctx.Param("slug")

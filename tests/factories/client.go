@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"discountapp/domain"
+	"discountapp/utils"
 )
 
 func BuildClient() *domain.Client {
@@ -28,6 +29,6 @@ func BuildStubbedClient() *domain.Client {
 }
 
 func getBirthDate() time.Time {
-	birthDate, _ := time.Parse("2006-01-02", "1980-01-29")
+	birthDate, _ := time.Parse(utils.DateFormat, "29/01/1980")
 	return birthDate
 }

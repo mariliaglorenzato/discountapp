@@ -1,8 +1,8 @@
 package usecases
 
 import (
-	domain "discountapp/domain"
 	"discountapp/usecases/interfaces"
+	"discountapp/usecases/outputs"
 )
 
 type GetClients struct {
@@ -13,11 +13,15 @@ func NewGetClients(repository interfaces.IRepository) interfaces.IGetClients {
 	return &GetClients{Repository: repository}
 }
 
-func (usecase *GetClients) Perform() ([]*domain.Client, error) {
+func (usecase *GetClients) Perform() (*outputs.ClientsOutput, error) {
 	output, err := usecase.Repository.GetAllClients()
 	if err != nil {
 		return nil, err
 	}
 
-	return output, nil
+	clientsOutput := &outputs.ClientsOutput{
+		Clients: output,
+	}
+
+	return clientsOutput, nil
 }

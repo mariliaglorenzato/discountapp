@@ -7,21 +7,22 @@ import (
 	"discountapp/controllers/payloads"
 	"discountapp/usecases/inputs"
 	"discountapp/usecases/interfaces"
+	"discountapp/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 type ClientsController struct {
-	getClient    interfaces.IGetClients
+	getClients   interfaces.IGetClients
 	createClient interfaces.ICreateClient
 }
 
 func NewClientsController(
-	getClient interfaces.IGetClients,
+	getClients interfaces.IGetClients,
 	createClient interfaces.ICreateClient,
 ) *ClientsController {
 	return &ClientsController{
-		getClient:    getClient,
+		getClients:   getClients,
 		createClient: createClient,
 	}
 }
@@ -32,21 +33,36 @@ func NewClientsController(
 // @Tags         clients
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   payloads.ClientPayload
+// @Success      200  {array}   responses.ClientsResponse
 // @Failure      400  {object}  responses.ErrorResponse
 // @Failure      404  {object}  responses.ErrorResponse
 // @Failure      500  {object}  responses.ErrorResponse
 // @Router       /clients [get]
 func (c *ClientsController) GetAll(ctx *gin.Context) {
-	ucOutput, err := c.getClient.Perform()
+	ucOutput, err := c.getClients.Perform()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.IndentedJSON(http.StatusOK, ucOutput)
+	ctx.IndentedJSON(
+		http.StatusOK,
+		gin.H{"data": ucOutput},
+	)
 }
 
+// AddClient godoc
+// @Summary      Add a client
+// @Description  add by json client
+// @Tags         clients
+// @Accept       json
+// @Produce      json
+// @Param        client  body       payloads.ClientPayload  true  "Add client"
+// @Success      200      {object}  responses.ClientsResponse
+// @Failure      400      {object}  responses.ErrorResponse
+// @Failure      404      {object}  responses.ErrorResponse
+// @Failure      500      {object}  responses.ErrorResponse
+// @Router       /clients [post]
 func (c *ClientsController) Create(ctx *gin.Context) {
 	var payload *payloads.ClientPayload
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
@@ -55,7 +71,7 @@ func (c *ClientsController) Create(ctx *gin.Context) {
 	}
 
 	// colocar no arquivo de data
-	parsedBirthDate, err := time.Parse("02/01/2006", payload.BirthDate)
+	parsedBirthDate, err := time.Parse(utils.DateFormat, payload.BirthDate)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

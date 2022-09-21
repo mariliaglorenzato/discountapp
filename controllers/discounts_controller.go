@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"discountapp/controllers/responses"
@@ -39,7 +38,7 @@ func NewDiscountsController(
 // @Router       /discounts [get]
 func (c *DiscountsController) Show(ctx *gin.Context) {
 	queryParams := ctx.Request.URL.Query()
-	ProductSlugQueryParam := queryParams.Get("product_title")
+	ProductSlugQueryParam := queryParams.Get("product_slug")
 	if ProductSlugQueryParam == "" {
 		ctx.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ProductSlug"})
 		return
@@ -59,7 +58,6 @@ func (c *DiscountsController) Show(ctx *gin.Context) {
 		ctx.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println(ucOutput)
 
 	response, _ := json.Marshal(&responses.DiscountResponse{
 		OriginalProductPrice: ucOutput.OriginalProductPrice,
