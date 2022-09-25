@@ -40,12 +40,12 @@ func (c *DiscountsController) Show(ctx *gin.Context) {
 	queryParams := ctx.Request.URL.Query()
 	ProductSlugQueryParam := queryParams.Get("product_slug")
 	if ProductSlugQueryParam == "" {
-		ctx.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ProductSlug"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ProductSlug"})
 		return
 	}
 	clientEmailQueryParam := queryParams.Get("client_email")
 	if clientEmailQueryParam == "" {
-		ctx.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ClientEmail"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ClientEmail"})
 		return
 	}
 	input := inputs.DiscountInput{
@@ -55,7 +55,7 @@ func (c *DiscountsController) Show(ctx *gin.Context) {
 
 	ucOutput, err := c.getDiscount.Perform(&input)
 	if err != nil {
-		ctx.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -66,7 +66,5 @@ func (c *DiscountsController) Show(ctx *gin.Context) {
 		DiscountPercentage:   ucOutput.DiscountPercentage,
 	})
 
-	ctx.IndentedJSON(http.StatusOK, gin.H{
-		"data": response,
-	})
+	ctx.JSON(http.StatusOK, string(response))
 }

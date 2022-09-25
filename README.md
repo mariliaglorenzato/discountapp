@@ -16,3 +16,8 @@ docker build -t golang-api .
 ```
  docker run -p 8080:8080 -t golang-api
 ```
+
+### Generate Swagger Doc:
+```
+    swag init
+```

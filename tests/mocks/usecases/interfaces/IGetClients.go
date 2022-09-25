@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	domain "discountapp/domain"
+	"discountapp/usecases/outputs"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -14,15 +14,15 @@ type IGetClients struct {
 }
 
 // Perform provides a mock function with given fields:
-func (_m *IGetClients) Perform() ([]*domain.Client, error) {
+func (_m *IGetClients) Perform() (*outputs.ClientsOutput, error) {
 	ret := _m.Called()
 
-	var r0 []*domain.Client
-	if rf, ok := ret.Get(0).(func() []*domain.Client); ok {
+	var r0 *outputs.ClientsOutput
+	if rf, ok := ret.Get(0).(func() *outputs.ClientsOutput); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*domain.Client)
+			r0 = ret.Get(0).(*outputs.ClientsOutput)
 		}
 	}
 

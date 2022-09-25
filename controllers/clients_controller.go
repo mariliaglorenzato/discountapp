@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"discountapp/controllers/payloads"
+	"discountapp/controllers/responses"
 	"discountapp/usecases/inputs"
 	"discountapp/usecases/interfaces"
 	"discountapp/utils"
@@ -45,10 +46,7 @@ func (c *ClientsController) GetAll(ctx *gin.Context) {
 		return
 	}
 
-	ctx.IndentedJSON(
-		http.StatusOK,
-		gin.H{"data": ucOutput},
-	)
+	ctx.JSON(http.StatusOK, responses.GetClientsResponse(ucOutput))
 }
 
 // AddClient godoc
@@ -90,5 +88,5 @@ func (c *ClientsController) Create(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"data": ucOutput})
+	ctx.JSON(http.StatusOK, gin.H{"data": utils.ToJson(ucOutput)})
 }

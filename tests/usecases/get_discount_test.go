@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	mocks "discountapp/tests/mocks/usecases/interfaces"
+	"discountapp/tests/utils"
 
 	"discountapp/domain"
 	"discountapp/tests/factories"
@@ -64,20 +65,21 @@ var _ = Describe("Getting Discount Data", func() {
 		usecase := usecases.NewGetDiscount(repositoryMock)
 		repositoryMock.On("GetProduct", &domain.Product{Slug: input.ProductSlug}).Return(product, productMockedError)
 		repositoryMock.On("GetClient", &domain.Client{Email: input.ClientEmail}).Return(client, clientMockedError)
+
 		output, err = usecase.Perform(&input)
 	})
 
 	When("use case retrieves discount", func() {
-		When("It successfully retrieve discount", func() {
+		When("It is a special date and events discount are added", func() {
 			BeforeEach(func() {
+				utils.WriteEventInFile()
 				expectedOutput = &outputs.DiscountOutput{
 					ProductTile:          "Caneta de CD",
-					ProductPrice:         2874, // 0,042 * 3000
+					ProductPrice:         2871, // 0,043 * 3000
 					OriginalProductPrice: 3000,
-					DiscountPercentage:   4.2,
+					DiscountPercentage:   4.3,
 				}
 			})
-
 			It("Returns expected output", func() {
 				Expect(output).To(Equal(expectedOutput))
 				Expect(err).To(BeNil())

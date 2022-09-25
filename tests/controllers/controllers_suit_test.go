@@ -1,4 +1,4 @@
-package usecases_test
+package controllers_test
 
 import (
 	"testing"
@@ -9,8 +9,8 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestUsecases(t *testing.T) {
+func TestContollers(t *testing.T) {
 	RegisterFailHandler(Fail)
-	config.SetConfigs("test")
-	RunSpecs(t, "Usecases Suite")
+	config.SetConfigs(config.TestEnv)
+	RunSpecs(t, "Controllers Suite")
 }

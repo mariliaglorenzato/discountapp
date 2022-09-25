@@ -35,7 +35,7 @@ func NewProductsController(
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   responses.ProductResponse
+// @Success      200  {array}   responses.ProductsResponse
 // @Failure      400  {object}  responses.ErrorResponse
 // @Failure      404  {object}  responses.ErrorResponse
 // @Failure      500  {object}  responses.ErrorResponse
@@ -81,7 +81,15 @@ func (c *ProductsController) Create(ctx *gin.Context) {
 		return
 	}
 
-	ctx.IndentedJSON(http.StatusOK, gin.H{"data": ucOutput})
+	ctx.IndentedJSON(http.StatusOK, gin.H{
+		"data": responses.ProductResponse{
+			ID:          ucOutput.ID,
+			Title:       ucOutput.Title,
+			Description: ucOutput.Description,
+			Slug:        ucOutput.Slug,
+			Price:       float64(ucOutput.Price),
+		},
+	})
 }
 
 // Show godoc
