@@ -1,6 +1,7 @@
 package responses
 
 import (
+	"discountapp/domain"
 	"discountapp/usecases/outputs"
 )
 
@@ -26,7 +27,7 @@ func GetProductsResponse(productsOutput *outputs.ProductsOutput) *ProductsRespon
 			Title:       product.Title,
 			Slug:        product.Slug,
 			Description: product.Description,
-			Price:       float64(product.Price / 100),
+			Price:       float64(product.Price) * float64(0.01),
 			CreatedAt:   product.CreatedAt.String(),
 			UpdatedAt:   product.UpdatedAt.String(),
 		})
@@ -34,5 +35,15 @@ func GetProductsResponse(productsOutput *outputs.ProductsOutput) *ProductsRespon
 
 	return &ProductsResponse{
 		Products: productsResponse,
+	}
+}
+
+func GetProductResponse(product *domain.Product) *ProductResponse {
+	return &ProductResponse{
+		ID:          product.ID,
+		Title:       product.Title,
+		Slug:        product.Slug,
+		Description: product.Description,
+		Price:       float64(product.Price) * float64(0.01),
 	}
 }

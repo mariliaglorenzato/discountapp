@@ -119,5 +119,5 @@ func (c *ProductsController) Show(ctx *gin.Context) {
 		return
 	}
 
-	ctx.IndentedJSON(http.StatusOK, ucOutput)
+	ctx.IndentedJSON(http.StatusOK, responses.GetProductResponse(ucOutput))
 }
