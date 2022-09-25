@@ -30,7 +30,7 @@ func (r *Repository) GetAllProducts() ([]*domain.Product, error) {
 }
 
 func (r *Repository) GetProduct(product *domain.Product) (*domain.Product, error) {
-	result := r.db.Where(product)
+	result := r.db.Where("slug = ?", &product.Slug).First(product)
 
 	if result.Error != nil {
 		return nil, result.Error

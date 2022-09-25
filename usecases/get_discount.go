@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"math"
+
 	domain "discountapp/domain"
 	"discountapp/usecases/inputs"
 	"discountapp/usecases/interfaces"
@@ -39,7 +41,7 @@ func (usecase *GetDiscount) Perform(discountInput *inputs.DiscountInput) (*outpu
 		ProductTile:          productOutput.Title,
 		ProductPrice:         int64(totalPrice),
 		OriginalProductPrice: int64(productOutput.Price),
-		DiscountPercentage:   totalDiscount,
+		DiscountPercentage:   float64(math.Round(totalDiscount*1000) / 1000),
 	}
 
 	return &output, nil

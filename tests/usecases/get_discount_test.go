@@ -77,7 +77,7 @@ var _ = Describe("Getting Discount Data", func() {
 					ProductTile:          "Caneta de CD",
 					ProductPrice:         2871, // 0,043 * 3000
 					OriginalProductPrice: 3000,
-					DiscountPercentage:   4.3,
+					DiscountPercentage:   0.043,
 				}
 			})
 			It("Returns expected output", func() {

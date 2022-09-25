@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -39,7 +38,7 @@ func GetEnv() string {
 
 func LoadEventConfigFromFile() []byte {
 	eventConfigFileName := GetBasePath() + "/" + eventsDiscounts + "." + GetEnv() + ".json"
-	fmt.Println(eventConfigFileName)
+
 	jsonEvents, err := os.Open(eventConfigFileName)
 	if err != nil {
 		panic("Error at opening EventsConfig: " + err.Error())

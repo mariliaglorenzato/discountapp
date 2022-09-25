@@ -1,12 +1,14 @@
 package main
 
 import (
+	"discountapp/config"
 	"discountapp/controllers"
 	"discountapp/docs"
 	"discountapp/persistence"
 	"discountapp/usecases"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -28,6 +30,7 @@ import (
 
 // @securityDefinitions.basic  BasicAuth
 func main() {
+	config.SetConfigs(viper.GetString(config.ServerEnv))
 	// load database
 	db := persistence.NewPersistence()
 	// load repository

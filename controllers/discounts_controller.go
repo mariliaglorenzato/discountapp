@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"discountapp/controllers/responses"
@@ -48,23 +47,17 @@ func (c *DiscountsController) Show(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing Query Param: ClientEmail"})
 		return
 	}
-	input := inputs.DiscountInput{
+
+	input := &inputs.DiscountInput{
 		ProductSlug: ProductSlugQueryParam,
 		ClientEmail: clientEmailQueryParam,
 	}
 
-	ucOutput, err := c.getDiscount.Perform(&input)
+	ucOutput, err := c.getDiscount.Perform(input)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	response, _ := json.Marshal(&responses.DiscountResponse{
-		OriginalProductPrice: ucOutput.OriginalProductPrice,
-		ProductTile:          ucOutput.ProductTile,
-		ProductPrice:         ucOutput.ProductPrice,
-		DiscountPercentage:   ucOutput.DiscountPercentage,
-	})
-
-	ctx.JSON(http.StatusOK, string(response))
+	ctx.JSON(http.StatusOK, responses.GetDiscountResponse(ucOutput))
 }
